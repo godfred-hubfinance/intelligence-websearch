@@ -1,4 +1,5 @@
 import io
+import os
 import math
 import datetime
 import pandas as pd
@@ -37,9 +38,17 @@ app = FastAPI(
     description="REST API for querying structured events and triggering intelligence pipelines on European Multi-Family Offices."
 )
 
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    os.getenv("FRONTEND_URL"),
+]
+
+origins = [origin for origin in origins if origin]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
